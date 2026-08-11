@@ -52,6 +52,23 @@ class ThemeManager {
         color: ColorsManager.blue,
       ),
 
+      titleLarge: TextStyle(
+        fontSize: 20.sp,
+        fontWeight: FontWeight.w500,
+        color: ColorsManager.black,
+      ),
+
+      titleMedium: TextStyle(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w500,
+        color: ColorsManager.black,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w500,
+        color: ColorsManager.black,
+      ),
+
       labelMedium: TextStyle(
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
@@ -59,7 +76,7 @@ class ThemeManager {
       ),
       labelLarge: TextStyle(
         fontSize: 15.sp,
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w500,
         color: ColorsManager.blue,
       ),
     ),
@@ -71,6 +88,12 @@ class ThemeManager {
         textStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
         foregroundColor: ColorsManager.blue,
       ),
+    ),
+
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: ColorsManager.whitePure,
+      type: BottomNavigationBarType.fixed,
+      unselectedItemColor: ColorsManager.gray,
     ),
   );
 
