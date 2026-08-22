@@ -11,4 +11,5 @@ class IconManager {
 class ImageManager {
   static const String logo = 'assets/images/evently_logo.png';
   static const String birthDay = 'assets/images/birthday_image.png';
+  static const String profile = 'assets/images/Profile pic.png';
 }

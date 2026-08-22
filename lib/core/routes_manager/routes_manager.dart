@@ -1,3 +1,4 @@
+import 'package:evently_app/features/add_event/add_event.dart';
 import 'package:evently_app/features/home/home.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class RoutesManager {
   static const String login = '/login';
   static const String register = '/register';
   static const String home = '/home';
+  static const String addEvent = '/add_event';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -18,6 +20,8 @@ class RoutesManager {
         return MaterialPageRoute(builder: (_) => RegisterScreen());
       case home:
         return MaterialPageRoute(builder: (_) => HomeScreen());
+      case addEvent:
+        return MaterialPageRoute(builder: (_) => AddEvent());
 
       default:
         return MaterialPageRoute(builder: (_) => RegisterScreen());

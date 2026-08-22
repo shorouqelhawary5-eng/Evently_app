@@ -1,3 +1,4 @@
+import 'package:evently_app/core/dialogUtils/dialog_utils.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/routes_manager/routes_manager.dart';
@@ -5,6 +6,9 @@ import 'package:evently_app/core/utils/validation.dart';
 import 'package:evently_app/core/widgets/custom_text_from_field.dart';
 import 'package:evently_app/core/widgets/elevated_button.dart';
 import 'package:evently_app/core/widgets/text_button_widget.dart';
+import 'package:evently_app/features/auth/login/login.dart';
+import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -21,16 +25,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController _nameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  late TextEditingController _ConfirmPasswordController;
+  late TextEditingController _confirmPasswordController;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _ConfirmPasswordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
   }
 
   @override
@@ -38,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _ConfirmPasswordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -54,14 +57,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             key: _formKey,
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
 
                 children: [
                   Image.asset(ImageManager.logo),
                   SizedBox(height: 40.h),
                   Text(
-                    'Create your account',
-                    textAlign: TextAlign.left,
+                    AppLocalizations.of(context)!.createYourAccount,
+
                     style: GoogleFonts.poppins(
                       textStyle: Theme.of(context).textTheme.headlineLarge,
                     ),
@@ -70,30 +73,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: 23.h),
 
                   CustomTextFromField(
-                    hintText: 'Enter your name',
+                    hintText: AppLocalizations.of(context)!.enterYourName,
                     prefixIcon: Icon(Icons.person),
                     controller: _nameController,
                     validator: (input) => Validator.nameValidation(input!),
                   ),
                   SizedBox(height: 14.h),
                   CustomTextFromField(
-                    hintText: 'Enter your email',
+                    hintText: AppLocalizations.of(context)!.enterYourEmail,
                     prefixIcon: Icon(Icons.email),
                     controller: _emailController,
                     validator: (input) => Validator.emailValidation(input!),
                   ),
                   SizedBox(height: 14.h),
                   CustomTextFromField(
-                    hintText: 'Enter your password',
+                    hintText: AppLocalizations.of(context)!.enterYourPassword,
                     prefixIcon: Icon(Icons.lock),
                     controller: _passwordController,
                     validator: (input) => Validator.passwordValidation(input!),
                   ),
                   SizedBox(height: 14.h),
                   CustomTextFromField(
-                    hintText: 'Confirm your password',
+                    hintText: AppLocalizations.of(context)!.confirmYourPassword,
                     prefixIcon: Icon(Icons.lock),
-                    controller: _ConfirmPasswordController,
+                    controller: _confirmPasswordController,
                     validator: (input) => Validator.confirmPasswordValidation(
                       input!,
                       _passwordController,
@@ -103,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(height: 47.h),
 
                   ElevatedButtonWidget(
-                    buttonText: 'Sign up',
+                    buttonText: AppLocalizations.of(context)!.signUp,
                     onClick: _register,
                   ),
                   SizedBox(height: 22.h),
@@ -112,14 +115,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Already have an account?',
+                        AppLocalizations.of(context)!.alreadyHaveAnAccount,
                         style: GoogleFonts.poppins(
                           textStyle: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
 
                       TextButtonWidget(
-                        buttonText: 'Sign in',
+                        buttonText: AppLocalizations.of(context)!.signIn,
                         onPressed: () {
                           Navigator.pushReplacementNamed(
                             context,
@@ -132,7 +135,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                   SizedBox(height: 20.h),
                   Text(
-                    'Or',
+                    AppLocalizations.of(context)!.or,
                     style: GoogleFonts.poppins(
                       textStyle: Theme.of(context).textTheme.labelLarge,
                     ),
@@ -140,8 +143,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   SizedBox(height: 24.h),
                   ElevatedButtonWidget(
-                    buttonText: 'Login with Google',
-                    buttonColor: ColorsManager.white,
+                    buttonText: AppLocalizations.of(context)!.loginWithGoogle,
+                    buttonColor: ColorsManager.whiteFF,
                     buttonTextColor: ColorsManager.blue,
                     icon: Image.asset(IconManager.google),
                   ),
@@ -154,7 +157,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void _register() {
-    if (_formKey.currentState!.validate() == false) return;
+  void _register() async {
+    // if (_formKey.currentState!.validate() == false) return;
+    try {
+      DialogUtils.showLoading(context, false);
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
+      DialogUtils.hideShowDialog(context);
+      DialogUtils.showToastMessage(
+        'Sucssesfully Regesteration',
+        ColorsManager.green,
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      DialogUtils.hideShowDialog(context);
+
+      if (e.code == 'weak-password') {
+        DialogUtils.showToastMessage(
+          'The password provided is too weak.',
+          ColorsManager.red,
+        );
+      } else if (e.code == 'email-already-in-use') {
+        DialogUtils.showToastMessage(
+          'The account already exists for that email',
+          ColorsManager.red,
+        );
+      }
+    } catch (e) {
+      DialogUtils.showToastMessage('$e', ColorsManager.red);
+    }
   }
 }

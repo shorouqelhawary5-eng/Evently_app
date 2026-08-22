@@ -1,5 +1,6 @@
 import 'package:evently_app/core/widgets/custom_text_from_field.dart';
 import 'package:evently_app/features/home/tabs/home_tab/widgets/event_item.dart';
+import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/categories_model.dart';
 import 'package:evently_app/models/event_model.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class FavoriteTab extends StatelessWidget {
         child: Column(
           children: [
             CustomTextFromField(
-              hintText: 'Search for event',
+              hintText: AppLocalizations.of(context)!.searchForEvent,
               suffixIcon: Icon(Icons.search),
             ),
 
@@ -29,7 +30,7 @@ class FavoriteTab extends StatelessWidget {
                       id: '0',
                       title: 'This is a Birthday Party',
                       describtion: '',
-                      category: CategoriesModel.categories[0],
+                      category: CategoriesModel.categoriesWithAll(context)[0],
                       date: DateTime(2026, 8, 15),
                       time: TimeOfDay(hour: 7, minute: 30),
                     ),

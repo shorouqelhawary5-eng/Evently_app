@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {
-  ElevatedButtonWidget({
+  const ElevatedButtonWidget({
     super.key,
     required this.buttonText,
     this.buttonColor,
@@ -15,13 +15,13 @@ class ElevatedButtonWidget extends StatelessWidget {
   final Color? buttonColor;
   final Color? buttonTextColor;
   final Widget? icon;
-  VoidCallback? onClick;
+  final VoidCallback? onClick;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onClick,
-      style: ThemeManager.elevatedButtonStyle(
+      style: ThemeManager.elevatedButtonStyle_light(
         buttonColor: buttonColor,
         textColor: buttonTextColor,
       ),

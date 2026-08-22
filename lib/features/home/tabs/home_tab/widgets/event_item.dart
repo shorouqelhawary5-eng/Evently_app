@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class EventItem extends StatelessWidget {
-  EventItem({super.key, required this.event});
-  EventModel event;
+  const EventItem({super.key, required this.event});
+  final EventModel event;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +27,7 @@ class EventItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Card(
-              color: ColorsManager.whiteF0,
+              // color: ColorsManager.whiteFF,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -43,8 +43,7 @@ class EventItem extends StatelessWidget {
 
             SizedBox(height: 88.h),
             Card(
-              color: ColorsManager.whiteF0,
-
+              // color:ColorsManager.whiteFF,
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Row(

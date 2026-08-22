@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 class TabItem extends StatelessWidget {
-  TabItem({
+  const TabItem({
     super.key,
     required this.categories,
     required this.selectedTabColor,
@@ -16,14 +16,14 @@ class TabItem extends StatelessWidget {
     required this.unSelectedIcon,
     this.isSelected = false,
   });
-  CategoriesModel categories;
-  Color selectedTabColor;
-  Color unSelectedTabColor;
-  Color selectedTitleColor;
-  Color unSelectedTitleColor;
-  Color selectedIcon;
-  Color unSelectedIcon;
-  bool isSelected;
+  final CategoriesModel categories;
+  final Color selectedTabColor;
+  final Color unSelectedTabColor;
+  final Color selectedTitleColor;
+  final Color unSelectedTitleColor;
+  final Color selectedIcon;
+  final Color unSelectedIcon;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
