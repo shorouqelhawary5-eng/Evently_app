@@ -1,12 +1,11 @@
-import 'package:evently_app/config/theme/theme.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/routes_manager/routes_manager.dart';
+import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/provider/language_provider.dart';
 import 'package:evently_app/provider/theme_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:evently_app/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +21,8 @@ class ProfileTab extends StatefulWidget {
 class _ProfileTabState extends State<ProfileTab> {
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
+
     var themeProvider = Provider.of<ThemeProvider>(context);
     var languageProvider = Provider.of<LanguageProvider>(context);
     return SafeArea(
@@ -33,7 +34,7 @@ class _ProfileTabState extends State<ProfileTab> {
             Image.asset(ImageManager.profile),
             SizedBox(height: 16.h),
             Text(
-              'Shorouq El-Hawary',
+              userProvider.name,
               style: GoogleFonts.poppins(
                 textStyle: Theme.of(context).textTheme.headlineMedium,
               ),
@@ -41,7 +42,7 @@ class _ProfileTabState extends State<ProfileTab> {
             SizedBox(height: 4.h),
 
             Text(
-              'shorouq@gmail.com',
+              userProvider.email,
               style: GoogleFonts.poppins(
                 textStyle: Theme.of(context).textTheme.labelMedium,
               ),
@@ -159,8 +160,8 @@ class _ProfileTabState extends State<ProfileTab> {
     );
   }
 
-  void _logOut() {
-    FirebaseAuth.instance.signOut();
+  void _logOut() async {
+    await FirebaseServices.logout();
     Navigator.pushReplacementNamed(context, RoutesManager.login);
   }
 }

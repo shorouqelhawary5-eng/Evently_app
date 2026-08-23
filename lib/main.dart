@@ -1,7 +1,9 @@
 import 'package:evently_app/config/theme/theme.dart';
+import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/provider/language_provider.dart';
 import 'package:evently_app/provider/theme_provider.dart';
+import 'package:evently_app/provider/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,17 @@ void main() async {
   await themeProvider.getSavedTheme();
   final langProvider = LanguageProvider();
   await langProvider.getLang();
+  final userProvider = UserProvider();
+
+  final currentUser = FirebaseAuth.instance.currentUser;
+
+  if (currentUser != null) {
+    final userData = await FirebaseServices.getUserFromFirebase(
+      currentUser.uid,
+    );
+
+    userProvider.updateUserData(userData);
+  }
   runApp(
     MultiProvider(
       providers: [
@@ -29,6 +42,7 @@ void main() async {
           // create: (context) => LanguageProvider(),
           value: langProvider,
         ),
+        ChangeNotifierProvider<UserProvider>.value(value: userProvider),
       ],
       child: EventlyApp(),
     ),
@@ -49,6 +63,7 @@ class EventlyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
+          // initialRoute: RoutesManager.onBoarding,
           initialRoute: FirebaseAuth.instance.currentUser == null
               ? RoutesManager.login
               : RoutesManager.home,

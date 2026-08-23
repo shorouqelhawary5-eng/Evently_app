@@ -6,6 +6,7 @@ import 'package:evently_app/models/categories_model.dart';
 import 'package:evently_app/models/event_model.dart';
 import 'package:evently_app/provider/language_provider.dart';
 import 'package:evently_app/provider/theme_provider.dart';
+import 'package:evently_app/provider/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,6 +25,7 @@ class _HomeTabState extends State<HomeTab> {
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
     var langProvider = Provider.of<LanguageProvider>(context);
+    var userProvider = Provider.of<UserProvider>(context);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -80,7 +82,7 @@ class _HomeTabState extends State<HomeTab> {
             ),
 
             Text(
-              'Shorouq El-Hawary',
+              userProvider.name,
               style: GoogleFonts.poppins(
                 textStyle: Theme.of(context).textTheme.titleLarge,
               ),

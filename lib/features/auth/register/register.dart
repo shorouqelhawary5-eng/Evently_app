@@ -7,7 +7,9 @@ import 'package:evently_app/core/widgets/custom_text_from_field.dart';
 import 'package:evently_app/core/widgets/elevated_button.dart';
 import 'package:evently_app/core/widgets/text_button_widget.dart';
 import 'package:evently_app/features/auth/login/login.dart';
+import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -158,14 +160,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _register() async {
-    // if (_formKey.currentState!.validate() == false) return;
     try {
       DialogUtils.showLoading(context, false);
-      final credential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
+      final user = await FirebaseServices.register(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      UserModel userModel = UserModel(
+        id: user.user!.uid,
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+      );
+      await FirebaseServices.addUserinFirebase(userModel);
       DialogUtils.hideShowDialog(context);
       DialogUtils.showToastMessage(
         'Sucssesfully Regesteration',

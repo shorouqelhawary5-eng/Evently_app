@@ -6,12 +6,14 @@ import 'package:evently_app/core/utils/validation.dart';
 import 'package:evently_app/core/widgets/custom_text_from_field.dart';
 import 'package:evently_app/core/widgets/elevated_button.dart';
 import 'package:evently_app/core/widgets/text_button_widget.dart';
-import 'package:evently_app/features/home/home.dart';
+import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/provider/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -144,17 +146,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
     try {
       DialogUtils.showLoading(context, false);
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+
+      final credential = await FirebaseServices.login(
         email: _emailController.text,
         password: _passwordController.text,
       );
-      DialogUtils.hideShowDialog(context);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+      final user = await FirebaseServices.getUserFromFirebase(
+        credential.user!.uid,
       );
+      context.read<UserProvider>().updateUserData(user);
+
+      DialogUtils.hideShowDialog(context);
+
+      Navigator.pushReplacementNamed(context, RoutesManager.home);
     } on FirebaseAuthException catch (e) {
       DialogUtils.hideShowDialog(context);
 
