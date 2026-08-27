@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final user = await FirebaseServices.getUserFromFirebase(
         credential.user!.uid,
       );
-      context.read<UserProvider>().updateUserData(user);
+      context.read<UserProvider>().updateUserData(user!);
 
       DialogUtils.hideShowDialog(context);
 

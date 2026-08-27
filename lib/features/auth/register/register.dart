@@ -170,6 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         id: user.user!.uid,
         name: _nameController.text.trim(),
         email: _emailController.text.trim(),
+        favoriteEventId: [],
       );
       await FirebaseServices.addUserinFirebase(userModel);
       DialogUtils.hideShowDialog(context);

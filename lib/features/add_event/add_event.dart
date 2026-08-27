@@ -1,8 +1,17 @@
+import 'package:evently_app/core/dialogUtils/dialog_utils.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
+import 'package:evently_app/core/resources/colors_manager.dart';
+import 'package:evently_app/core/routes_manager/routes_manager.dart';
 import 'package:evently_app/core/widgets/custom_text_from_field.dart';
+import 'package:evently_app/core/widgets/elevated_button.dart';
 import 'package:evently_app/core/widgets/tab_controller_widget.dart';
 import 'package:evently_app/core/widgets/text_button_widget.dart';
+import 'package:evently_app/firebase/firebase_services.dart';
+import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/categories_model.dart';
+import 'package:evently_app/models/event_model.dart';
+import 'package:evently_app/models/user_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,36 +24,60 @@ class AddEvent extends StatefulWidget {
 }
 
 class _AddEventState extends State<AddEvent> {
-  DateTime? _selectedDate;
-  TimeOfDay? _selectedTime;
+  late DateTime _selectedDateTime;
+
+  late TextEditingController _titleController;
+  late TextEditingController _descriptionController;
+
+  late CategoriesModel selectedCategory = CategoriesModel.categoriesWithoutAll(
+    context,
+  )[0];
 
   @override
   void initState() {
     super.initState();
-    // Initialize with sensible defaults so values are never null unintentionally
-    _selectedDate = DateTime.now();
-    _selectedTime = TimeOfDay.now();
+
+    _selectedDateTime = DateTime.now();
+
+    _titleController = TextEditingController();
+    _descriptionController = TextEditingController();
   }
 
-  String _formatDate(DateTime d) =>
-      '${d.day.toString().padLeft(2, '0')}/${d.month.toString().padLeft(2, '0')}/${d.year}';
-  String _formatTime(TimeOfDay t) {
-    final h = t.hourOfPeriod == 0 && t.period == DayPeriod.pm
-        ? 12
-        : t.hourOfPeriod;
-    final hour = (h == 0)
-        ? 12
-        : h; // convert 0 -> 12 for 12-hour style display when needed
-    final hh = hour.toString().padLeft(2, '0');
-    final mm = t.minute.toString().padLeft(2, '0');
-    final period = t.period == DayPeriod.am ? 'AM' : 'PM';
-    return '$hh:$mm $period';
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  String _formatDate(DateTime dateTime) {
+    return '${dateTime.day.toString().padLeft(2, '0')}/'
+        '${dateTime.month.toString().padLeft(2, '0')}/'
+        '${dateTime.year}';
+  }
+
+  String _formatTime(DateTime dateTime) {
+    final hour = dateTime.hour % 12 == 0 ? 12 : dateTime.hour % 12;
+    final hourString = hour.toString().padLeft(2, '0');
+    final minuteString = dateTime.minute.toString().padLeft(2, '0');
+    final period = dateTime.hour < 12 ? 'AM' : 'PM';
+
+    return '$hourString:$minuteString $period';
+  }
+
+  TextDirection _getTextDirection(BuildContext context) {
+    return Localizations.localeOf(context).languageCode == 'ar'
+        ? TextDirection.rtl
+        : TextDirection.ltr;
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final textDirection = _getTextDirection(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Event')),
+      appBar: AppBar(title: Text(localizations.addEvent)),
       body: SingleChildScrollView(
         child: Padding(
           padding: REdgeInsets.only(right: 16.w, left: 16.w),
@@ -52,107 +85,174 @@ class _AddEventState extends State<AddEvent> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Image.asset(ImageManager.birthDay),
-              SizedBox(height: 16.h),
+
+              SizedBox(height: 4.h),
+
               TabControllerWidget(
                 categoriesListName: CategoriesModel.categoriesWithoutAll(
                   context,
                 ),
+                onClickCategory: (newCategory) {
+                  selectedCategory = newCategory;
+                },
               ),
-              SizedBox(height: 16.h),
+
+              SizedBox(height: 10.h),
+
+              // Title
               Text(
-                'title',
+                localizations.title,
                 style: GoogleFonts.poppins(
                   textStyle: Theme.of(context).textTheme.titleMedium,
                 ),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 8.h),
-              const CustomTextFromField(hintText: 'Event Title'),
 
-              SizedBox(height: 16.h),
+              SizedBox(height: 4.h),
+
+              CustomTextFromField(
+                controller: _titleController,
+                hintText: localizations.eventTitle,
+              ),
+
+              SizedBox(height: 10.h),
+
+              // Description
               Text(
-                'Description',
+                localizations.description,
                 style: GoogleFonts.poppins(
                   textStyle: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              SizedBox(height: 8.h),
-              const CustomTextFromField(
-                hintText: 'Event Description....',
+
+              SizedBox(height: 4.h),
+
+              CustomTextFromField(
+                controller: _descriptionController,
+                hintText: localizations.eventDescription,
                 maxLines: 4,
               ),
+
               SizedBox(height: 16.h),
-              Row(
-                children: [
-                  const Icon(Icons.calendar_month_outlined),
-                  SizedBox(width: 4.w),
-                  Text(
-                    _selectedDate != null
-                        ? _formatDate(_selectedDate!)
-                        : 'Event Date',
-                    style: GoogleFonts.poppins(
-                      textStyle: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                  const Spacer(),
-                  TextButtonWidget(
-                    buttonText: 'Choose date',
-                    onPressed: () async {
-                      final picked = await showDatePicker(
-                        context: context,
-                        initialDate: _selectedDate ?? DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(const Duration(days: 365)),
-                      );
 
-                      // Only update state if the user actually picked a date (didn't cancel)
-                      if (picked != null) {
-                        setState(() {
-                          _selectedDate = picked;
-                        });
-                      }
-                    },
-                  ),
-                ],
+              // Date
+              Directionality(
+                textDirection: textDirection,
+                child: Row(
+                  children: [
+                    const Icon(Icons.calendar_month_outlined),
+
+                    SizedBox(width: 4.w),
+
+                    Text(
+                      _formatDate(_selectedDateTime),
+                      style: GoogleFonts.poppins(
+                        textStyle: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ),
+
+                    const Spacer(),
+
+                    TextButtonWidget(
+                      buttonText: localizations.chooseDate,
+                      onPressed: () async {
+                        final picked = await showDatePicker(
+                          context: context,
+                          initialDate: _selectedDateTime,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime.now().add(
+                            const Duration(days: 365),
+                          ),
+                        );
+
+                        if (picked != null) {
+                          setState(() {
+                            _selectedDateTime = DateTime(
+                              picked.year,
+                              picked.month,
+                              picked.day,
+                              _selectedDateTime.hour,
+                              _selectedDateTime.minute,
+                            );
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
+
               SizedBox(height: 5.h),
-              Row(
-                children: [
-                  const Icon(Icons.more_time_outlined),
 
-                  SizedBox(width: 4.w),
-                  Text(
-                    _selectedTime != null
-                        ? _formatTime(_selectedTime!)
-                        : 'Event Time',
-                    style: GoogleFonts.poppins(
-                      textStyle: Theme.of(context).textTheme.titleMedium,
+              // Time
+              Directionality(
+                textDirection: textDirection,
+                child: Row(
+                  children: [
+                    const Icon(Icons.more_time_outlined),
+
+                    SizedBox(width: 4.w),
+
+                    Text(
+                      _formatTime(_selectedDateTime),
+                      style: GoogleFonts.poppins(
+                        textStyle: Theme.of(context).textTheme.titleMedium,
+                      ),
                     ),
-                  ),
 
-                  const Spacer(),
-                  TextButtonWidget(
-                    buttonText: 'Choose time',
-                    onPressed: () async {
-                      final picked = await showTimePicker(
-                        context: context,
-                        initialTime: _selectedTime ?? TimeOfDay.now(),
-                      );
+                    const Spacer(),
 
-                      // Only update state if the user actually picked a time (didn't cancel)
-                      if (picked != null) {
-                        setState(() {
-                          _selectedTime = picked;
-                        });
-                      }
-                    },
-                  ),
-                ],
+                    TextButtonWidget(
+                      buttonText: localizations.chooseTime,
+                      onPressed: () async {
+                        final picked = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay(
+                            hour: _selectedDateTime.hour,
+                            minute: _selectedDateTime.minute,
+                          ),
+                        );
+
+                        if (picked != null) {
+                          setState(() {
+                            _selectedDateTime = DateTime(
+                              _selectedDateTime.year,
+                              _selectedDateTime.month,
+                              _selectedDateTime.day,
+                              picked.hour,
+                              picked.minute,
+                            );
+                          });
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
+
+              SizedBox(height: 16.h),
+
+              ElevatedButtonWidget(buttonText: "Add Event", onClick: _addEvent),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _addEvent() async {
+    EventModel event = EventModel(
+      ownerId: FirebaseAuth.instance.currentUser!.uid,
+      id: "",
+      title: _titleController.text,
+      description: _descriptionController.text,
+      category: selectedCategory,
+      dateAndTime: _selectedDateTime,
+    );
+    DialogUtils.showLoading(context, false);
+    await FirebaseServices.addEventToFirebase(event, context);
+    DialogUtils.hideShowDialog(context);
+    DialogUtils.showToastMessage("Event add succesfully", ColorsManager.green);
+    Navigator.pop(context);
   }
 }

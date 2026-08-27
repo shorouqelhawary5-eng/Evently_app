@@ -1,4 +1,3 @@
-import 'package:evently_app/config/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
@@ -21,10 +20,6 @@ class ElevatedButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onClick,
-      style: ThemeManager.elevatedButtonStyle_light(
-        buttonColor: buttonColor,
-        textColor: buttonTextColor,
-      ),
 
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

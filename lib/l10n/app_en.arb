@@ -38,5 +38,6 @@
   "eventTime": "Choose time",
   "eventDetails": "Event details",
   "updateEvent": "Update event",
-  "signIn": "Sign in"
+  "signIn": "Sign in",
+  "chooseTime":"choose Time"
 }

@@ -127,4 +127,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get signIn => 'تسجيل الدخول';
+
+  @override
+  String get chooseTime => 'اختر الوقت';
 }

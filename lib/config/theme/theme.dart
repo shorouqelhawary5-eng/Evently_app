@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 class ThemeManager {
-  static ButtonStyle elevatedButtonStyle_light({
+  static ButtonStyle elevatedButtonStyleLight({
     Color? buttonColor,
     Color? textColor,
   }) {
@@ -16,7 +16,7 @@ class ThemeManager {
     );
   }
 
-  static ButtonStyle elevatedButtonStyle_dark({
+  static ButtonStyle elevatedButtonStyleDark({
     Color? buttonColor,
     Color? textColor,
   }) {
@@ -112,7 +112,7 @@ class ThemeManager {
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: elevatedButtonStyle_light(),
+      style: elevatedButtonStyleLight(),
     ),
 
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -221,7 +221,7 @@ class ThemeManager {
     ),
 
     elevatedButtonTheme: ElevatedButtonThemeData(
-      style: elevatedButtonStyle_dark(),
+      style: elevatedButtonStyleDark(),
     ),
 
     floatingActionButtonTheme: FloatingActionButtonThemeData(

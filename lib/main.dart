@@ -29,19 +29,15 @@ void main() async {
       currentUser.uid,
     );
 
-    userProvider.updateUserData(userData);
+    if (userData != null) {
+      userProvider.updateUserData(userData);
+    }
   }
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider<ThemeProvider>.value(
-          // create: (context) => ThemeProvider(),
-          value: themeProvider,
-        ),
-        ChangeNotifierProvider<LanguageProvider>.value(
-          // create: (context) => LanguageProvider(),
-          value: langProvider,
-        ),
+        ChangeNotifierProvider<ThemeProvider>.value(value: themeProvider),
+        ChangeNotifierProvider<LanguageProvider>.value(value: langProvider),
         ChangeNotifierProvider<UserProvider>.value(value: userProvider),
       ],
       child: EventlyApp(),
@@ -63,7 +59,7 @@ class EventlyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          // initialRoute: RoutesManager.onBoarding,
+          // initialRoute: RoutesManager.login,
           initialRoute: FirebaseAuth.instance.currentUser == null
               ? RoutesManager.login
               : RoutesManager.home,

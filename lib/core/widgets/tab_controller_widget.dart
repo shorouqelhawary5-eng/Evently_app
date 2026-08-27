@@ -5,8 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 class TabControllerWidget extends StatefulWidget {
-  const TabControllerWidget({super.key, required this.categoriesListName});
+  TabControllerWidget({
+    super.key,
+    required this.categoriesListName,
+    this.onClickCategory,
+  });
   final List<CategoriesModel> categoriesListName;
+  void Function(CategoriesModel)? onClickCategory;
 
   @override
   State<TabControllerWidget> createState() => _TabControllerWidgetState();
@@ -24,6 +29,9 @@ class _TabControllerWidgetState extends State<TabControllerWidget> {
         onTap: (index) {
           setState(() {
             currentTabIndex = index;
+            widget.onClickCategory?.call(
+              widget.categoriesListName[currentTabIndex],
+            );
           });
         },
         labelStyle: TextStyle(fontSize: 16.sp, fontWeight: .w500),

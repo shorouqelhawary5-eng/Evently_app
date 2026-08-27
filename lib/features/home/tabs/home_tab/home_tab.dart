@@ -1,6 +1,7 @@
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/widgets/tab_controller_widget.dart';
 import 'package:evently_app/features/home/tabs/home_tab/widgets/event_item.dart';
+import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/categories_model.dart';
 import 'package:evently_app/models/event_model.dart';
@@ -21,6 +22,9 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   int currentTabIndex = 0;
+  late CategoriesModel selectedCategory = CategoriesModel.categoriesWithAll(
+    context,
+  )[0];
   @override
   Widget build(BuildContext context) {
     var themeProvider = Provider.of<ThemeProvider>(context);
@@ -82,7 +86,7 @@ class _HomeTabState extends State<HomeTab> {
             ),
 
             Text(
-              userProvider.name,
+              userProvider.user?.name ?? '',
               style: GoogleFonts.poppins(
                 textStyle: Theme.of(context).textTheme.titleLarge,
               ),
@@ -92,26 +96,44 @@ class _HomeTabState extends State<HomeTab> {
 
             TabControllerWidget(
               categoriesListName: CategoriesModel.categoriesWithAll(context),
+              onClickCategory: (newCategory) {
+                selectedCategory = newCategory;
+                setState(() {});
+              },
             ),
 
             SizedBox(height: 24.h),
-
             Expanded(
-              child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return EventItem(
-                    event: EventModel(
-                      id: '0',
-                      title: 'This is a Birthday Party',
-                      describtion: '',
-                      category: CategoriesModel.categoriesWithAll(context)[0],
-                      date: DateTime(2026, 8, 15),
-                      time: TimeOfDay(hour: 7, minute: 30),
-                    ),
+              child: StreamBuilder<List<EventModel>>(
+                stream: FirebaseServices.getEventFromFirebase(
+                  context,
+                  selectedCategory,
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text(snapshot.error.toString()));
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text("No events found"));
+                  }
+
+                  final events = snapshot.data!;
+
+                  return ListView.separated(
+                    itemBuilder: (context, index) {
+                      return EventItem(event: events[index]);
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox(height: 8.h);
+                    },
+                    itemCount: events.length,
                   );
                 },
-                separatorBuilder: (context, index) => SizedBox(height: 16.h),
-                itemCount: 10,
               ),
             ),
           ],

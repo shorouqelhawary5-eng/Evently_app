@@ -34,7 +34,7 @@ class _ProfileTabState extends State<ProfileTab> {
             Image.asset(ImageManager.profile),
             SizedBox(height: 16.h),
             Text(
-              userProvider.name,
+              userProvider.user?.name ?? '',
               style: GoogleFonts.poppins(
                 textStyle: Theme.of(context).textTheme.headlineMedium,
               ),
@@ -42,7 +42,7 @@ class _ProfileTabState extends State<ProfileTab> {
             SizedBox(height: 4.h),
 
             Text(
-              userProvider.email,
+              userProvider.user?.email ?? '',
               style: GoogleFonts.poppins(
                 textStyle: Theme.of(context).textTheme.labelMedium,
               ),
