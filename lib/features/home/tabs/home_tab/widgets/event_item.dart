@@ -1,4 +1,5 @@
 import 'package:evently_app/core/resources/colors_manager.dart';
+import 'package:evently_app/core/routes_manager/routes_manager.dart';
 import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/models/event_model.dart';
 import 'package:evently_app/models/user_model.dart';
@@ -53,69 +54,79 @@ class _EventItemState extends State<EventItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 210.h,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(widget.event.category.image),
-          fit: BoxFit.fill,
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          RoutesManager.details,
+          arguments: widget.event,
+        );
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        width: double.infinity,
+        height: 210.h,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(widget.event.category.image),
+            fit: BoxFit.fill,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: ColorsManager.gray),
         ),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: ColorsManager.gray),
-      ),
-      child: Padding(
-        padding: EdgeInsets.only(right: 8.w, left: 8, top: 4.h, bottom: 4.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              // color: ColorsManager.whiteFF,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  DateFormat('dd MMM').format(widget.event.dateAndTime),
-                  style: GoogleFonts.poppins(
-                    textStyle: Theme.of(context).textTheme.labelLarge,
+        child: Padding(
+          padding: EdgeInsets.only(right: 8.w, left: 8, top: 4.h, bottom: 4.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Card(
+                // color: ColorsManager.whiteFF,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    DateFormat('dd MMM').format(widget.event.dateAndTime),
+                    style: GoogleFonts.poppins(
+                      textStyle: Theme.of(context).textTheme.labelLarge,
+                    ),
                   ),
+
+                  // ),
                 ),
-
-                // ),
               ),
-            ),
 
-            SizedBox(height: 80.h),
-            Card(
-              // color:ColorsManager.whiteFF,
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        widget.event.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.poppins(
-                          textStyle: Theme.of(context).textTheme.titleSmall,
+              SizedBox(height: 80.h),
+              Card(
+                // color:ColorsManager.whiteFF,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.event.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.poppins(
+                            textStyle: Theme.of(context).textTheme.titleSmall,
+                          ),
                         ),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: _toggleFavorite,
-                      icon: Icon(
-                        isFavorite
-                            ? Icons.favorite
-                            : Icons.favorite_border_outlined,
-                        color: ColorsManager.blue,
+                      IconButton(
+                        onPressed: _toggleFavorite,
+                        icon: Icon(
+                          isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border_outlined,
+                          color: ColorsManager.blue,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

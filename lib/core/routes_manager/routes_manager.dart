@@ -1,4 +1,5 @@
 import 'package:evently_app/features/add_event/add_event.dart';
+import 'package:evently_app/features/event_details/event_details_screen.dart';
 import 'package:evently_app/features/home/home.dart';
 import 'package:evently_app/features/on_boarding/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class RoutesManager {
   static const String home = '/home';
   static const String addEvent = '/add_event';
   static const String onBoarding = '-on_boarding';
+  static const String details = '/details';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -26,6 +28,11 @@ class RoutesManager {
         return MaterialPageRoute(builder: (_) => AddEvent());
       case onBoarding:
         return MaterialPageRoute(builder: (_) => OnBoardingScreen());
+      case details:
+        return MaterialPageRoute(
+          builder: (_) => EventDetailsScreen(),
+          settings: settings,
+        );
 
       default:
         return MaterialPageRoute(builder: (_) => RegisterScreen());

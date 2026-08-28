@@ -6,6 +6,8 @@ class IconManager {
   static const String homeSelsected = 'assets/images/home-2.png';
   static const String favoriteSelected = 'assets/images/heart.png';
   static const String profileSelected = 'assets/images/user.png';
+  static const String edit = 'assets/images/edit-2.png';
+  static const String delete = 'assets/images/trash.png';
 }
 
 class ImageManager {

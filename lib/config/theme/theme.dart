@@ -34,6 +34,7 @@ class ThemeManager {
     useMaterial3: true,
     scaffoldBackgroundColor: ColorsManager.whiteFF,
     iconTheme: IconThemeData(color: ColorsManager.blue),
+
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
       centerTitle: true,
@@ -42,6 +43,7 @@ class ThemeManager {
         fontWeight: .w500,
         color: ColorsManager.black,
       ),
+      iconTheme: IconThemeData(color: ColorsManager.blue),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
@@ -71,6 +73,7 @@ class ThemeManager {
     ),
 
     textTheme: TextTheme(
+      bodyLarge: TextStyle(color: ColorsManager.black),
       headlineLarge: TextStyle(
         fontSize: 24.sp,
         fontWeight: FontWeight.w600,
@@ -141,7 +144,7 @@ class ThemeManager {
     scaffoldBackgroundColor: ColorsManager.backGroundDarkMode,
     iconTheme: IconThemeData(color: ColorsManager.blue8F),
 
-    cardTheme: CardThemeData(color: ColorsManager.backGroundDarkMode),
+    cardTheme: CardThemeData(color: ColorsManager.inputsDark),
 
     appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
@@ -151,6 +154,8 @@ class ThemeManager {
         fontWeight: .w500,
         color: ColorsManager.whitePure,
       ),
+
+      iconTheme: IconThemeData(color: ColorsManager.whiteFF),
     ),
 
     inputDecorationTheme: InputDecorationTheme(
@@ -180,6 +185,7 @@ class ThemeManager {
     ),
 
     textTheme: TextTheme(
+      bodyLarge: TextStyle(color: ColorsManager.gray6D),
       headlineLarge: TextStyle(
         fontSize: 24.sp,
         fontWeight: FontWeight.w600,
