@@ -130,4 +130,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get chooseTime => 'اختر الوقت';
+
+  @override
+  String get editEvent => 'تعديل الفعالية';
 }

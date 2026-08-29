@@ -39,6 +39,7 @@
   "eventDetails": "تفاصيل الفعالية",
   "updateEvent": "تحديث الفعالية",
   "signIn": "تسجيل الدخول",
-  "chooseTime": "اختر الوقت"
+  "chooseTime": "اختر الوقت",
+  "editEvent": "تعديل الفعالية"
 
 }

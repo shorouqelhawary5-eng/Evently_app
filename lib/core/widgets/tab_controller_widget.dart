@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 
 class TabControllerWidget extends StatefulWidget {
-  TabControllerWidget({
+  const TabControllerWidget({
     super.key,
     required this.categoriesListName,
     this.onClickCategory,
   });
   final List<CategoriesModel> categoriesListName;
-  void Function(CategoriesModel)? onClickCategory;
+  final void Function(CategoriesModel)? onClickCategory;
 
   @override
   State<TabControllerWidget> createState() => _TabControllerWidgetState();

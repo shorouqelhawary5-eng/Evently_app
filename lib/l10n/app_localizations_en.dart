@@ -130,4 +130,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseTime => 'choose Time';
+
+  @override
+  String get editEvent => 'Edit Event';
 }

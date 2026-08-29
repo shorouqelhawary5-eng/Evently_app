@@ -343,6 +343,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'choose Time'**
   String get chooseTime;
+
+  /// No description provided for @editEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Event'**
+  String get editEvent;
 }
 
 class _AppLocalizationsDelegate

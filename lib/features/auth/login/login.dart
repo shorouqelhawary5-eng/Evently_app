@@ -130,11 +130,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 24.h),
+
                   ElevatedButtonWidget(
                     buttonText: AppLocalizations.of(context)!.loginWithGoogle,
                     buttonColor: ColorsManager.whiteFF,
                     buttonTextColor: ColorsManager.blue,
                     icon: Image.asset(IconManager.google),
+                    onClick: _signWithGoogle,
                   ),
                 ],
               ),
@@ -164,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
       DialogUtils.hideShowDialog(context);
 
       Navigator.pushReplacementNamed(context, RoutesManager.home);
+      // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       DialogUtils.hideShowDialog(context);
 
@@ -172,5 +175,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ColorsManager.red,
       );
     }
+  }
+
+  void _signWithGoogle() async {
+    await FirebaseServices.signInWithGoogle();
+    Navigator.pushReplacementNamed(context, RoutesManager.home);
   }
 }

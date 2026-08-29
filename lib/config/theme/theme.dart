@@ -7,10 +7,14 @@ class ThemeManager {
     Color? buttonColor,
     Color? textColor,
   }) {
+    final backgroundColor = buttonColor ?? ColorsManager.blue;
+    final foregroundColor = textColor ?? ColorsManager.whiteFF;
+
     return ElevatedButton.styleFrom(
       padding: REdgeInsets.symmetric(vertical: 8.h),
-      backgroundColor: buttonColor ?? ColorsManager.blue,
-      foregroundColor: textColor ?? ColorsManager.whiteFF,
+      backgroundColor: backgroundColor,
+      foregroundColor: foregroundColor,
+      surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       textStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
     );
@@ -20,10 +24,14 @@ class ThemeManager {
     Color? buttonColor,
     Color? textColor,
   }) {
+    final backgroundColor = buttonColor ?? const Color(0xFF0E3A99);
+    final foregroundColor = textColor ?? ColorsManager.inputsDark;
+
     return ElevatedButton.styleFrom(
       padding: REdgeInsets.symmetric(vertical: 8.h),
-      backgroundColor: buttonColor ?? ColorsManager.blueED,
-      foregroundColor: textColor ?? ColorsManager.inputsDark,
+      backgroundColor: backgroundColor,
+      foregroundColor: foregroundColor,
+      surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
       textStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w500),
     );

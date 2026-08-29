@@ -1,6 +1,7 @@
 import 'package:evently_app/core/dialogUtils/dialog_utils.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
+import 'package:evently_app/core/routes_manager/routes_manager.dart';
 import 'package:evently_app/features/event_details/widgets/icons_style_in_appbar.dart';
 import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
@@ -33,7 +34,14 @@ class EventDetailsScreen extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.eventDetails),
         actions: (FirebaseAuth.instance.currentUser!.uid == event.ownerId)
             ? [
-                IconsAppBar(icon: Image.asset(IconManager.edit)),
+                InkWell(
+                  onTap: () => Navigator.pushReplacementNamed(
+                    context,
+                    RoutesManager.addEvent,
+                    arguments: event,
+                  ),
+                  child: IconsAppBar(icon: Image.asset(IconManager.edit)),
+                ),
                 SizedBox(width: 6.w),
 
                 InkWell(

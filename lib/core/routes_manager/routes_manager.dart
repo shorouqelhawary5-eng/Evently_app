@@ -2,6 +2,7 @@ import 'package:evently_app/features/add_event/add_event.dart';
 import 'package:evently_app/features/event_details/event_details_screen.dart';
 import 'package:evently_app/features/home/home.dart';
 import 'package:evently_app/features/on_boarding/on_boarding_screen.dart';
+import 'package:evently_app/models/event_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/auth/login/login.dart';
@@ -25,7 +26,13 @@ class RoutesManager {
       case home:
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case addEvent:
-        return MaterialPageRoute(builder: (_) => AddEvent());
+        final EventModel? event = settings.arguments as EventModel?;
+
+        return MaterialPageRoute(
+          builder: (_) => AddEvent(event: event),
+          settings: settings,
+        );
+
       case onBoarding:
         return MaterialPageRoute(builder: (_) => OnBoardingScreen());
       case details:

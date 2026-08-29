@@ -1,5 +1,5 @@
 import 'package:evently_app/core/resources/assets_manager.dart';
-import 'package:evently_app/core/routes_manager/routes_manager.dart';
+import 'package:evently_app/features/add_event/add_event.dart';
 import 'package:evently_app/features/home/tabs/favorite_tab/favorite_tab.dart';
 import 'package:evently_app/features/home/tabs/home_tab/home_tab.dart';
 import 'package:evently_app/features/home/tabs/profile_tab/profile_tab.dart';
@@ -26,7 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Icon(Icons.add),
 
         onPressed: () {
-          Navigator.pushNamed(context, RoutesManager.addEvent);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => AddEvent()),
+          );
+          // Navigator.pushNamed(context, RoutesManager.addEvent);
         },
       ),
     );

@@ -149,6 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     buttonColor: ColorsManager.whiteFF,
                     buttonTextColor: ColorsManager.blue,
                     icon: Image.asset(IconManager.google),
+                    onClick: _signWithGoogle,
                   ),
                 ],
               ),
@@ -157,6 +158,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  void _signWithGoogle() async {
+    await FirebaseServices.signInWithGoogle();
+    Navigator.pushReplacementNamed(context, RoutesManager.home);
   }
 
   void _register() async {
