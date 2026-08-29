@@ -1,3 +1,4 @@
+import 'package:evently_app/core/dialogUtils/dialog_utils.dart';
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/core/resources/colors_manager.dart';
 import 'package:evently_app/core/routes_manager/routes_manager.dart';
@@ -5,13 +6,17 @@ import 'package:evently_app/core/utils/validation.dart';
 import 'package:evently_app/core/widgets/custom_text_from_field.dart';
 import 'package:evently_app/core/widgets/elevated_button.dart';
 import 'package:evently_app/core/widgets/text_button_widget.dart';
-import 'package:evently_app/features/auth/register/register.dart';
+import 'package:evently_app/firebase/firebase_services.dart';
+import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/provider/user_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+  const LoginScreen({super.key});
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -20,8 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _emailController = TextEditingController();
@@ -52,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Image.asset(ImageManager.logo),
                   SizedBox(height: 47.h),
                   Text(
-                    'Login to your account',
+                    AppLocalizations.of(context)!.loginToYourAccount,
                     style: GoogleFonts.poppins(
                       textStyle: Theme.of(context).textTheme.headlineLarge,
                     ),
@@ -61,13 +67,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 24.h),
 
                   CustomTextFromField(
-                    hintText: 'Enter your email',
+                    controller: _emailController,
+                    hintText: AppLocalizations.of(context)!.enterYourEmail,
                     prefixIcon: Icon(Icons.email),
                     validator: (input) => Validator.emailValidation(input!),
                   ),
                   SizedBox(height: 16.h),
                   CustomTextFromField(
-                    hintText: 'Enter your password',
+                    controller: _passwordController,
+                    hintText: AppLocalizations.of(context)!.enterYourPassword,
                     prefixIcon: Icon(Icons.lock),
                     validator: (input) => Validator.passwordValidation(input!),
                   ),
@@ -76,27 +84,34 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButtonWidget(buttonText: 'forget password?'),
+                      TextButtonWidget(
+                        buttonText: AppLocalizations.of(
+                          context,
+                        )!.forgetPassword,
+                      ),
                     ],
                   ),
 
                   SizedBox(height: 50.h),
 
-                  ElevatedButtonWidget(buttonText: 'Login', onClick: _login),
+                  ElevatedButtonWidget(
+                    buttonText: AppLocalizations.of(context)!.login,
+                    onClick: _login,
+                  ),
                   SizedBox(height: 24.h),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Don’t have an account ?',
+                        AppLocalizations.of(context)!.dontHaveAnAccount,
                         style: GoogleFonts.poppins(
                           textStyle: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
 
                       TextButtonWidget(
-                        buttonText: 'Sign up',
+                        buttonText: AppLocalizations.of(context)!.signUp,
                         onPressed: () {
                           Navigator.pushReplacementNamed(
                             context,
@@ -108,18 +123,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 30.h),
                   Text(
-                    'Or',
+                    AppLocalizations.of(context)!.or,
                     style: GoogleFonts.poppins(
                       textStyle: Theme.of(context).textTheme.labelLarge,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 24.h),
+
                   ElevatedButtonWidget(
-                    buttonText: 'Login with Google',
-                    buttonColor: ColorsManager.white,
+                    buttonText: AppLocalizations.of(context)!.loginWithGoogle,
+                    buttonColor: ColorsManager.whiteFF,
                     buttonTextColor: ColorsManager.blue,
                     icon: Image.asset(IconManager.google),
+                    onClick: _signWithGoogle,
                   ),
                 ],
               ),
@@ -130,7 +147,38 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  void _login() {
-    if (_formKey.currentState!.validate() == false) return;
+  void _login() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    try {
+      DialogUtils.showLoading(context, false);
+
+      final credential = await FirebaseServices.login(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      final user = await FirebaseServices.getUserFromFirebase(
+        credential.user!.uid,
+      );
+      context.read<UserProvider>().updateUserData(user!);
+
+      DialogUtils.hideShowDialog(context);
+
+      Navigator.pushReplacementNamed(context, RoutesManager.home);
+      // ignore: unused_catch_clause
+    } on FirebaseAuthException catch (e) {
+      DialogUtils.hideShowDialog(context);
+
+      DialogUtils.showToastMessage(
+        'chek your email or password',
+        ColorsManager.red,
+      );
+    }
+  }
+
+  void _signWithGoogle() async {
+    await FirebaseServices.signInWithGoogle();
+    Navigator.pushReplacementNamed(context, RoutesManager.home);
   }
 }

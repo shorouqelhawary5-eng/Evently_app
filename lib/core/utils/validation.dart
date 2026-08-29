@@ -5,6 +5,7 @@ class Validator {
 
   // Validator({required this.input});
   static String? nameValidation(String input) {
+    // ignore: unnecessary_null_comparison
     if (input == null || input.trim().isEmpty) {
       return 'Enter your name';
     }
@@ -13,6 +14,7 @@ class Validator {
 
   static String? emailValidation(String input) {
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    // ignore: unnecessary_null_comparison
     if (input == null || input.trim().isEmpty) {
       return 'Please, enter your email';
     }
@@ -26,6 +28,7 @@ class Validator {
 
   static String? passwordValidation(String input) {
     final passwordRegex = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$');
+    // ignore: unnecessary_null_comparison
     if (input == null || input.isEmpty) {
       return 'Please, enter your password';
     }
