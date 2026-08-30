@@ -1,0 +1,68 @@
+flutter_native_splash:
+
+
+  color: "#F4F7FF"  
+  color_dark: "#000F30"
+
+  image:               assets/images/evently_splash.png
+  image_dark:          assets/images/splash_dark.png
+  # platform-specific image. will override general image if active:
+  #image_android:       assets/splash-android.png
+  #image_dark_android:  assets/splash-invert-android.png
+  #image_ios:           assets/splash-ios.png
+  #image_dark_ios:      assets/splash-invert-ios.png
+  #image_web:           assets/splash-web.gif
+  #image_dark_web:      assets/splash-invert-web.gif  
+  branding:      assets/images/evently_branding.png
+  branding_bottom_padding: 24          # default 0
+
+  #branding_dark: assets/dart_dark.png
+ 
+  #branding_android:      assets/brand-android.png
+  #branding_dark_android: assets/dart_dark-android.png
+  #branding_ios:          assets/brand-ios.png
+  #branding_dark_ios:     assets/dart_dark-ios.png
+  #branding_web:          assets/brand-web.gif
+  #branding_dark_web:     assets/dart_dark-web.gif
+
+  # branding position:
+  # you can use bottom, bottomRight, and bottomLeft. The default values is 
+  # bottom if not specified or specified something else.
+  #branding_mode: bottom                # default bottom
+  
+  #branding_bottom_padding_android: 24  # default 0
+  #branding_bottom_padding_ios: 24      # default 0
+  # branding bottom padding web is not available yet.
+
+  # The screen orientation can be set in Android with the android_screen_orientation parameter.
+  # Valid parameters can be found here:
+  # https://developer.android.com/guide/topics/manifest/activity-element#screen
+  #android_screen_orientation: sensorLandscape
+
+
+  fullscreen: true               
+
+  
+  #! ANDROID 12+ configuration:
+  android_12:
+    # background color
+    color: "#F4F7FF"
+    color_dark: "#000F30"
+
+    # center-logo
+    # If this parameter is not specified, the app's launcher icon will be used instead. 
+    # Please note that the splash screen will be clipped to a circle on the center of the screen. 
+    # with background: 960×960 px (fit within circle 640px in diameter)    
+    # without background: 1152×1152 px (fit within circle 768px in diameter)
+    # ensure that the most important design elements of your image are placed within a circular area 
+    image: assets/images/splash_screen12+.png    
+    image_dark: assets/images/splash_+12_dark.png 
+
+    # center-logo background color
+    icon_background_color: "#F4F7FF"
+    icon_background_color_dark: "#000F30"
+
+    # branding:
+    # The branding image dimensions must be 800x320 px.
+    branding:      assets/images/branding_12+.png     
+    #branding_dark: assets/dart_dark.png
