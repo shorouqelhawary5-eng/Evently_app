@@ -8,6 +8,13 @@ class IconManager {
   static const String profileSelected = 'assets/images/user.png';
   static const String edit = 'assets/images/edit-2.png';
   static const String delete = 'assets/images/trash.png';
+
+  static const String moonDark = "assets/images/dark_dark.png";
+  static const String moonLight = "assets/images/darkIcon_light.png";
+
+  static const String sunDark = "assets/images/sun_dark.png";
+  static const String sunLight = "assets/images/sunLight.png";
+  static const String sunUnselecte = "assets/images/sun_unselecte.png";
 }
 
 class ImageManager {
@@ -18,4 +25,8 @@ class ImageManager {
   static const String exhibition = 'assets/images/Exhibition.png';
   static const String bookClub = 'assets/images/Book Club.png';
   static const String sport = 'assets/images/Sport.png';
+  static const String onBoardingIntro = 'assets/images/onBoarding_intro.png';
+  static const String onBoarding1 = 'assets/images/onBoarding_1.png';
+  static const String onBoarding2 = 'assets/images/onBoarding_2.png';
+  static const String onBoarding3 = 'assets/images/onBoarding_3.png';
 }

@@ -133,4 +133,53 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get editEvent => 'تعديل الفعالية';
+
+  @override
+  String get onBoardingIntroTitle => 'خصص تجربتك';
+
+  @override
+  String get onBoardingIntroDescribtion =>
+      'اختر المظهر واللغة المفضلين لديك للبدء بتجربة مريحة ومخصصة تناسب أسلوبك.';
+
+  @override
+  String get onBoardingTitle1 => 'اكتشف الفعاليات التي تلهمك';
+
+  @override
+  String get onBoardingDescribtion1 =>
+      'انغمس في عالم من الفعاليات المصممة لتناسب اهتماماتك الفريدة. سواء كنت من محبي الموسيقى الحية، أو ورش العمل الفنية، أو التواصل المهني، أو ببساطة اكتشاف تجارب جديدة، ستجد ما يناسبك. ستساعدك توصياتنا المختارة بعناية على الاستكشاف والتواصل والاستفادة القصوى من كل فرصة من حولك.';
+
+  @override
+  String get onBoardingTitle2 => 'خطط لفعالياتك بسهولة';
+
+  @override
+  String get onBoardingDescribtion2 =>
+      'تخلص من عناء تنظيم الفعاليات باستخدام أدوات التخطيط المتكاملة لدينا. بدءًا من إرسال الدعوات وإدارة تأكيدات الحضور، وصولًا إلى جدولة التذكيرات وتنسيق التفاصيل، نحن نهتم بكل شيء. خطط بسهولة وركز على ما يهم حقًا — إنشاء تجربة لا تُنسى لك ولضيوفك.';
+
+  @override
+  String get onBoardingTitle3 => 'تواصل مع أصدقائك وشارك لحظاتك';
+
+  @override
+  String get onBoardingDescribtion3 =>
+      'اجعل كل فعالية ذكرى لا تُنسى من خلال مشاركة التجربة مع الآخرين. تتيح لك منصتنا دعوة أصدقائك، وإبقاء الجميع على اطلاع، والاحتفال باللحظات معًا. التقط لحظات الحماس وشاركها مع شبكتك، لتتمكن من استعادة أجمل اللحظات والاحتفاظ بذكرياتك الغالية.';
+
+  @override
+  String get next => 'التالي';
+
+  @override
+  String get skip => 'تخطي';
+
+  @override
+  String get letsstart => 'لنبدأ';
+
+  @override
+  String get getStarted => 'ابدأ الآن';
+
+  @override
+  String get theme => 'المظهر';
+
+  @override
+  String get arab => 'العربية';
+
+  @override
+  String get english => 'الإنجليزية';
 }

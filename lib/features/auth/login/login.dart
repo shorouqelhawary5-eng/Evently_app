@@ -8,6 +8,7 @@ import 'package:evently_app/core/widgets/elevated_button.dart';
 import 'package:evently_app/core/widgets/text_button_widget.dart';
 import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
+import 'package:evently_app/prefs_manager/prefs_manager.dart';
 import 'package:evently_app/provider/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -163,9 +164,15 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       context.read<UserProvider>().updateUserData(user!);
 
+      if (!mounted) return;
       DialogUtils.hideShowDialog(context);
 
-      Navigator.pushReplacementNamed(context, RoutesManager.home);
+      final isOnBoardingCompleted = await PrefsManager.isOnBoardingCompleted();
+      final route = isOnBoardingCompleted
+          ? RoutesManager.home
+          : RoutesManager.onBoardingIntro;
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, route);
       // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       DialogUtils.hideShowDialog(context);
@@ -179,6 +186,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _signWithGoogle() async {
     await FirebaseServices.signInWithGoogle();
-    Navigator.pushReplacementNamed(context, RoutesManager.home);
+    final isOnBoardingCompleted = await PrefsManager.isOnBoardingCompleted();
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(
+      context,
+      isOnBoardingCompleted
+          ? RoutesManager.home
+          : RoutesManager.onBoardingIntro,
+    );
   }
 }
