@@ -10,6 +10,7 @@ import 'package:evently_app/features/auth/login/login.dart';
 import 'package:evently_app/firebase/firebase_services.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/user_model.dart';
+import 'package:evently_app/prefs_manager/prefs_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
@@ -162,7 +163,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void _signWithGoogle() async {
     await FirebaseServices.signInWithGoogle();
-    Navigator.pushReplacementNamed(context, RoutesManager.home);
+    final isOnBoardingCompleted = await PrefsManager.isOnBoardingCompleted();
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(
+      context,
+      isOnBoardingCompleted
+          ? RoutesManager.home
+          : RoutesManager.onBoardingIntro,
+    );
   }
 
   void _register() async {
@@ -179,16 +187,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
         favoriteEventId: [],
       );
       await FirebaseServices.addUserinFirebase(userModel);
+      if (!mounted) return;
       DialogUtils.hideShowDialog(context);
       DialogUtils.showToastMessage(
         'Sucssesfully Regesteration',
         ColorsManager.green,
       );
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => LoginScreen()),
       );
     } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
       DialogUtils.hideShowDialog(context);
 
       if (e.code == 'weak-password') {

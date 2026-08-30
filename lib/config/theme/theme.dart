@@ -92,13 +92,16 @@ class ThemeManager {
         fontWeight: FontWeight.w600,
         color: ColorsManager.black,
       ),
-
+      headlineSmall: TextStyle(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w400,
+        color: ColorsManager.darkGray,
+      ),
       titleLarge: TextStyle(
         fontSize: 20.sp,
         fontWeight: FontWeight.w500,
         color: ColorsManager.black,
       ),
-
       titleMedium: TextStyle(
         fontSize: 16.sp,
         fontWeight: FontWeight.w500,
@@ -110,6 +113,12 @@ class ThemeManager {
         color: ColorsManager.black,
       ),
 
+      bodyMedium: TextStyle(
+        fontSize: 14.sp,
+        fontWeight: FontWeight.w600,
+        color: ColorsManager.whiteFF,
+      ),
+
       labelMedium: TextStyle(
         fontSize: 14.sp,
         fontWeight: FontWeight.w400,
@@ -117,6 +126,12 @@ class ThemeManager {
       ),
       labelLarge: TextStyle(
         fontSize: 15.sp,
+        fontWeight: FontWeight.w500,
+        color: ColorsManager.blue,
+      ),
+
+      labelSmall: TextStyle(
+        fontSize: 18.sp,
         fontWeight: FontWeight.w500,
         color: ColorsManager.blue,
       ),
@@ -204,7 +219,11 @@ class ThemeManager {
         fontWeight: FontWeight.w600,
         color: ColorsManager.whiteFF,
       ),
-
+      headlineSmall: TextStyle(
+        fontSize: 16.sp,
+        fontWeight: FontWeight.w400,
+        color: ColorsManager.darkGray,
+      ),
       titleLarge: TextStyle(
         fontSize: 20.sp,
         fontWeight: FontWeight.w500,
@@ -231,6 +250,11 @@ class ThemeManager {
         fontSize: 15.sp,
         fontWeight: FontWeight.w500,
         color: ColorsManager.blueED,
+      ),
+      labelSmall: TextStyle(
+        fontSize: 18.sp,
+        fontWeight: FontWeight.w500,
+        color: ColorsManager.whiteFF,
       ),
     ),
 

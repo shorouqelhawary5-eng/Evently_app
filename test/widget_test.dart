@@ -7,6 +7,7 @@
 
 import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/features/add_event/add_event.dart';
+import 'package:evently_app/features/on_boarding/widgets/small_button.dart';
 import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/models/categories_model.dart';
 import 'package:evently_app/models/event_model.dart';
@@ -49,5 +50,28 @@ void main() {
     expect(find.text('Update event'), findsOneWidget);
     expect(find.text('Team meeting'), findsOneWidget);
     expect(find.text('Discuss launch timeline'), findsOneWidget);
+  });
+
+  testWidgets('SmallButton triggers tap callback when pressed', (
+    WidgetTester tester,
+  ) async {
+    var tapped = false;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SmallButton(
+            text: 'English',
+            isSelected: false,
+            onTap: () => tapped = true,
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('English'));
+    await tester.pump();
+
+    expect(tapped, isTrue);
   });
 }
