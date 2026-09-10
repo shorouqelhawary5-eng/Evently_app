@@ -9,6 +9,7 @@ class CustomTextFromField extends StatelessWidget {
     this.validator,
     this._controller,
     this.maxLines = 1,
+    this.obscureText = false,
   });
   final String hintText;
   final int maxLines;
@@ -16,11 +17,13 @@ class CustomTextFromField extends StatelessWidget {
   final Function(String?)? validator;
   final TextEditingController? _controller;
   final Widget? suffixIcon;
+  final bool obscureText;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       maxLines: maxLines,
+      obscureText: obscureText,
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefixIcon,

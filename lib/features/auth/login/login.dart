@@ -25,6 +25,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
+  bool _isPasswordVisible = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -78,6 +79,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _passwordController,
                     hintText: AppLocalizations.of(context)!.enterYourPassword,
                     prefixIcon: Icon(Icons.lock),
+                    obscureText: !_isPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                     validator: (input) => Validator.passwordValidation(input!),
                   ),
 

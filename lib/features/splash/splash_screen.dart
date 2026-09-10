@@ -1,4 +1,5 @@
 import 'package:evently_app/core/routes_manager/routes_manager.dart';
+import 'package:evently_app/core/resources/assets_manager.dart';
 import 'package:evently_app/prefs_manager/prefs_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: FlutterLogo(size: 120)));
+    return Scaffold(body: Center(child: Image.asset(ImageManager.logo)));
   }
 }

@@ -29,6 +29,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _confirmPasswordController;
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   @override
   void initState() {
@@ -93,6 +95,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: AppLocalizations.of(context)!.enterYourPassword,
                     prefixIcon: Icon(Icons.lock),
                     controller: _passwordController,
+                    obscureText: !_isPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                     validator: (input) => Validator.passwordValidation(input!),
                   ),
                   SizedBox(height: 14.h),
@@ -100,6 +115,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hintText: AppLocalizations.of(context)!.confirmYourPassword,
                     prefixIcon: Icon(Icons.lock),
                     controller: _confirmPasswordController,
+                    obscureText: !_isConfirmPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isConfirmPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isConfirmPasswordVisible =
+                              !_isConfirmPasswordVisible;
+                        });
+                      },
+                    ),
                     validator: (input) => Validator.confirmPasswordValidation(
                       input!,
                       _passwordController,
