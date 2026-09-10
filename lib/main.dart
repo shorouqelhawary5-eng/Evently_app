@@ -3,6 +3,8 @@ import 'package:evently_app/l10n/app_localizations.dart';
 import 'package:evently_app/provider/language_provider.dart';
 import 'package:evently_app/provider/theme_provider.dart';
 import 'package:evently_app/provider/user_provider.dart';
+import 'package:evently_app/prefs_manager/prefs_manager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil_plus/flutter_screenutil_plus.dart';
@@ -52,6 +54,12 @@ void main() async {
   final langProvider = LanguageProvider();
   await langProvider.getLang();
   final userProvider = UserProvider();
+  final isOnBoardingCompleted = await PrefsManager.isOnBoardingCompleted();
+  final initialRoute = !isOnBoardingCompleted
+      ? RoutesManager.onBoardingIntro
+      : FirebaseAuth.instance.currentUser == null
+      ? RoutesManager.login
+      : RoutesManager.home;
 
   runApp(
     MultiProvider(
@@ -60,13 +68,15 @@ void main() async {
         ChangeNotifierProvider<LanguageProvider>.value(value: langProvider),
         ChangeNotifierProvider<UserProvider>.value(value: userProvider),
       ],
-      child: const EventlyApp(),
+      child: EventlyApp(initialRoute: initialRoute),
     ),
   );
 }
 
 class EventlyApp extends StatelessWidget {
-  const EventlyApp({super.key});
+  const EventlyApp({super.key, required this.initialRoute});
+
+  final String initialRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +89,7 @@ class EventlyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: RoutesManager.splash,
+          initialRoute: initialRoute,
           onGenerateRoute: RoutesManager.generateRoute,
           theme: ThemeManager.lightTheme,
           darkTheme: ThemeManager.darkTheme,

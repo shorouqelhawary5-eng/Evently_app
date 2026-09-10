@@ -3,7 +3,6 @@ import 'package:evently_app/features/event_details/event_details_screen.dart';
 import 'package:evently_app/features/home/home.dart';
 import 'package:evently_app/features/on_boarding/intro_screen/onboarding_intro_screen.dart';
 import 'package:evently_app/features/on_boarding/onBoarding_details/onboarding_details.dart';
-import 'package:evently_app/features/splash/splash_screen.dart';
 import 'package:evently_app/models/event_model.dart';
 import 'package:flutter/material.dart';
 
@@ -22,9 +21,6 @@ class RoutesManager {
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case splash:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
-
       case login:
         return MaterialPageRoute(builder: (_) => LoginScreen());
 

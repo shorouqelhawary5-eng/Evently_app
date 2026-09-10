@@ -36,7 +36,7 @@ class ElevatedButtonWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (icon != null) icon!,
+          ?icon,
           if (icon != null) SizedBox(width: 10.w),
           Text(buttonText),
         ],
